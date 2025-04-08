@@ -1,2 +1,3 @@
-# qwen-sentiment-classification-finetune
-Adding a head to Qwen 7B to make it a sentiment classifier
+# Qwen sentiment classification finetune
+
+After [finetuning GPT-2 for sentiment classification](https://github.com/ishanjmukherjee/gpt2-sentiment-classification-finetune), I moved on to turning the base Qwen 7B model into a sentiment classifier. Initially, I tried the same approach as I had before: add a classification head, unfreeze the last two layers, hit "train". Turned out it would take over 5 hours per epoch, even on a beefy 80GB VRAM Nvidia H100. Get impatient and increase the batch size a few powers of 2, and CUDA goes out of memory. I changed my approach to using LoRA with aggressive (4-bit) quantization. I trained for 3 epochs, each epoch taking about 2 hours. Memory usage was a modest 9-11 GB. After finetuning, validation accuracy was an impressive 97%. 
